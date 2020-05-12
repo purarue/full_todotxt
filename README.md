@@ -32,6 +32,17 @@ Run
 ----------
 
 ```
-full_todotxt /path/to/your/todo.txt/file
+Usage: full_todotxt [OPTIONS] TODOTXT_FILE
+
+Options:
+  --add-due           Add due: key/value flag based on deadline:
+  --time-format TEXT  Specify a different time format for deadline:
+  --help              Show this message and exit.
+```
+
+Example:
+
+```
+full_todotxt ~/.todo/todo.txt
 ```
 
