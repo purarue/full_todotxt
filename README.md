@@ -3,6 +3,8 @@ full-todotxt
 
 [todotxt](http://todotxt.org/) interactive interface that forces you to specify certain attributes.
 
+<img src="https://raw.githubusercontent.com/seanbreckenridge/full_todotxt/master/.github/demo.gif" alt="demo gif">
+
 For each todo, you have to specify at least `one project tag` (e.g. `+work`) and a priority `(A)`.
 
 Though not required for each todo, it will prompt you want to specify a `deadline`, which will store a `deadline` key-value pair to the todo with the datetime as the value.
