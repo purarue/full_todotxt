@@ -19,7 +19,7 @@ For example:
 
 ... which specifies 2020-05-13 at 3:30PM.
 
-I use this with [`todotxt_deadline_notify`](https://github.com/seanbreckenridge/todotxt_deadline_notify), which parses the config file and sends me a reminders whenever a `deadline` is approaching.
+I use this with [`todotxt_deadline_notify`](https://github.com/seanbreckenridge/todotxt_deadline_notify), which parses the todo.txt file and sends me a reminders whenever a `deadline` is approaching.
 
 Installation
 ------------
