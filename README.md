@@ -1,6 +1,8 @@
 full-todotxt
 ======
 
+[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.6|3.7](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
+
 [todotxt](http://todotxt.org/) interactive interface that forces you to specify certain attributes.
 
 <img src="https://raw.githubusercontent.com/seanbreckenridge/full_todotxt/master/.github/demo.gif" alt="demo gif">
@@ -28,7 +30,7 @@ Installation
 
 To install with pip, run:
 
-    pip3 install full_todotxt
+    pip3 install full-todotxt
 
 Run
 ----------
