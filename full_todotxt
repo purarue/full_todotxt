@@ -107,9 +107,7 @@ def prompt_todo(add_due: bool, time_format: str) -> Optional[todotxtio.Todo]:
 
     # create todotxtio.Todo object based on responses.
     new_todo = todotxtio.Todo(text=todo_text,
-                              priority=todo_priority,
-                              creation_date=datetime.strftime(
-                                  datetime.now(), "%Y-%m-%d"))
+                              priority=todo_priority)
     if todo_time is not None:
         new_todo.tags = {
                 "deadline": datetime.strftime(todo_time, time_format)
