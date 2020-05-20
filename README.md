@@ -21,6 +21,8 @@ For example:
 
 I use this with [`todotxt_deadline_notify`](https://github.com/seanbreckenridge/todotxt_deadline_notify), which parses the todo.txt file and sends me a reminders whenever a `deadline` is approaching.
 
+If the `todo.txt` file is not provided as the first argument, it tries to guess based on typical locations
+
 Installation
 ------------
 
@@ -36,11 +38,15 @@ Run
 ----------
 
 ```
-Usage: full_todotxt [OPTIONS] TODOTXT_FILE
+Usage: full_todotxt [OPTIONS] [TODOTXT_FILE]...
 
 Options:
-  --add-due           Add due: key/value flag based on deadline:
-  --time-format TEXT  Specify a different time format for deadline:
+  --add-due           Add due: key/value flag based on
+                      deadline:
+
+  --time-format TEXT  Specify a different time format for
+                      deadline:
+
   --help              Show this message and exit.
 ```
 
