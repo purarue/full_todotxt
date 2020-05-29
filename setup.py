@@ -15,7 +15,7 @@ with io.open('README.md', encoding='utf-8') as fo:
 setup(
     name='full-todotxt',
     version="0.1.3",
-    url='https://github.com/seanbreckenridge/full_todotxt',
+    url='https://gitlab.com/seanbreckenridge/full_todotxt',
     author='Sean Breckenridge',
     author_email='seanbrecke@gmail.com',
     description=('''todotxt interactive interface that forces you to specify attributes'''),
