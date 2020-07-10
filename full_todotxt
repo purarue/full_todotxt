@@ -208,6 +208,9 @@ def cli(todotxt_file: Optional[PathIsh], add_due: bool, time_format: str):
         click.echo("{}: {}".format(click.style("Adding Todo", fg="green"),
                                    new_todo))
         todotxtio.to_file(todotxt_file, todos)
+        # need to write an additional newline to the file, todotxt fails to do that
+        with open(todotxt_file, 'a') as todo_f:
+            todo_f.write('\n')
 
 
 if __name__ == "__main__":
