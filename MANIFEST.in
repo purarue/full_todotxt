@@ -2,6 +2,4 @@ include LICENSE
 include README.md
 
 exclude Makefile
-recursive-exclude .github
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]
+exclude .github/demo.gif
