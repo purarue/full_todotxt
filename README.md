@@ -1,7 +1,6 @@
-full-todotxt
-======
+# full-todotxt
 
-[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.6|3.7](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
+[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.7|3.8|3.9|3.10](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
 
 [todotxt](http://todotxt.org/) interactive interface that forces you to specify certain attributes.
 
@@ -23,19 +22,17 @@ I use this with [`todotxt_deadline_notify`](https://github.com/seanbreckenridge/
 
 If the `todo.txt` file is not provided as the first argument, it tries to guess based on typical locations
 
-Installation
-------------
+## Installation
 
 #### Requires:
 
-`python3.6+`
+`python3.7+`
 
 To install with pip, run:
 
-    pip3 install full-todotxt
+    python3 -m pip install full-todotxt
 
-Run
-----------
+## Run
 
 ```
 Usage: full_todotxt [OPTIONS] [TODOTXT_FILE]...
@@ -49,10 +46,3 @@ Options:
 
   --help              Show this message and exit.
 ```
-
-Example:
-
-```
-full_todotxt ~/.todo/todo.txt
-```
-
