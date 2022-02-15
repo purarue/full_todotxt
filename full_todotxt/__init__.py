@@ -107,7 +107,7 @@ def prompt_todo(add_due: bool, time_format: str) -> Optional[Task]:
                     ).run()
 
     # construct the TODO
-    constructed: str = todo_priority
+    constructed: str = f"({todo_priority})"
     constructed += f" {date.today()}"
     constructed += f" {todo_text}"
     constructed += f" {projects_raw}"

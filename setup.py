@@ -14,7 +14,7 @@ with io.open("README.md", encoding="utf-8") as fo:
 
 setup(
     name="full-todotxt",
-    version="0.1.5",
+    version="0.1.6",
     url="https://github.com/seanbreckenridge/full_todotxt",
     author="Sean Breckenridge",
     author_email="seanbrecke@gmail.com",
