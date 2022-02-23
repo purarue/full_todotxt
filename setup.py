@@ -2,7 +2,7 @@ import io
 from setuptools import setup
 
 requirements = [
-    "pytodotxt>=1.2.1",
+    "pytodotxt>=1.4.0",
     "dateparser>=0.7.4",
     "click>=8.0.0",
     "prompt-toolkit>=3.0.5",
@@ -14,7 +14,7 @@ with io.open("README.md", encoding="utf-8") as fo:
 
 setup(
     name="full-todotxt",
-    version="0.1.6",
+    version="0.1.7",
     url="https://github.com/seanbreckenridge/full_todotxt",
     author="Sean Breckenridge",
     author_email="seanbrecke@gmail.com",
@@ -24,9 +24,14 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",
-    test_suite="tests",
     install_requires=requirements,
     packages=["full_todotxt"],
+    extras_require={
+        "testing": [
+            "mypy",
+            "flake8",
+        ],
+    },
     entry_points={"console_scripts": ["full_todotxt = full_todotxt.__main__:cli"]},
     keywords="todotxt todo.txt todo",
     classifiers=[
