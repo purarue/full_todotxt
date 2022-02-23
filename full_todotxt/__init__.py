@@ -53,9 +53,9 @@ def prompt_todo(
 
     projects_raw: str = ""
     # if you provided a project in the text itself, skip forcing you to specify one
-    if len(Task(todo_text).projects) > 0:
+    if len(Task(todo_text).projects) == 0:
         # project tags
-        print("Enter one or more tags, hit 'Tab' to autocomplete")
+        click.echo("Enter one or more tags, hit 'Tab' to autocomplete")
         projects_raw = prompt(
             "[Enter Project Tags]> ",
             completer=FuzzyWordCompleter(projects),
