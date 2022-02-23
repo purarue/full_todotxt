@@ -24,9 +24,14 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",
-    test_suite="tests",
     install_requires=requirements,
     packages=["full_todotxt"],
+    extras_require={
+        "testing": [
+            "mypy",
+            "flake8",
+        ],
+    },
     entry_points={"console_scripts": ["full_todotxt = full_todotxt.__main__:cli"]},
     keywords="todotxt todo.txt todo",
     classifiers=[
