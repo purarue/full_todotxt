@@ -25,7 +25,7 @@ jobs:
           pip install '.[testing]'
       - name: Run mypy
         run: |
-          mypy ./full_todotxt
+          mypy --install-types --non-interactive ./full_todotxt
       - name: Run flake8
         run: |
           flake8 ./full_todotxt
