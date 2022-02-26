@@ -1,12 +1,8 @@
 import io
+from pathlib import Path
 from setuptools import setup
 
-requirements = [
-    "pytodotxt>=1.4.0",
-    "dateparser>=0.7.4",
-    "click>=8.0.0",
-    "prompt-toolkit>=3.0.5",
-]
+requirements = Path("requirements.txt").read_text().splitlines()
 
 # Use the README.md content for the long description:
 with io.open("README.md", encoding="utf-8") as fo:
