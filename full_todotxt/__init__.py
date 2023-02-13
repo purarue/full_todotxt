@@ -41,7 +41,6 @@ class ProjectTagValidator(Validator):
 def prompt_todo(
     *, add_due: bool, time_format: str, projects: List[str]
 ) -> Optional[Task]:
-
     # prompt the user for a new todo (just the text)
     todo_text: Optional[str] = input_dialog(title="Add Todo:").run()
 
