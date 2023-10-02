@@ -4,10 +4,12 @@ from pathlib import Path
 import click
 from pytodotxt.todotxt import TodoTxt, Task  # type: ignore[import]
 
-from . import parse_projects, full_backup, locate_todotxt_file, prompt_todo
+from .todo import parse_projects, full_backup, locate_todotxt_file, prompt_todo
 
 
-def run(todotxt_file: Optional[Path], add_due: bool, time_format: str) -> None:
+def run(
+    todotxt_file: Optional[Path], add_due: bool, time_format: str, full_screen: bool
+) -> None:
     # handle argument
     tfile = locate_todotxt_file(todotxt_file)
     if tfile is None:
@@ -42,6 +44,7 @@ def run(todotxt_file: Optional[Path], add_due: bool, time_format: str) -> None:
         add_due=add_due,
         time_format=time_format,
         projects=list(parse_projects(todo_sources)),
+        full_screen=full_screen,
     )
 
     # write back to file
@@ -55,7 +58,7 @@ def run(todotxt_file: Optional[Path], add_due: bool, time_format: str) -> None:
 
 @click.command()
 @click.argument(
-    "todotxt-file",
+    "TODOTXT_FILE",
     type=click.Path(exists=True, path_type=Path),
     default=None,
     required=False,
@@ -68,13 +71,25 @@ def run(todotxt_file: Optional[Path], add_due: bool, time_format: str) -> None:
     show_default=True,
 )
 @click.option(
+    "-t",
     "--time-format",
     default="%Y-%m-%d-%H-%M",
     show_default=True,
     help="Specify a different time format for deadline:",
 )
-def cli(todotxt_file: Optional[Path], add_due: bool, time_format: str) -> None:
-    run(todotxt_file, add_due, time_format)
+@click.option(
+    "-f/-p",
+    "--full-screen/--prompts",
+    "full_screen",
+    is_flag=True,
+    default=True,
+    help="Use prompts or the full screen dialog editor",
+    show_default=True,
+)
+def cli(
+    todotxt_file: Optional[Path], full_screen: bool, add_due: bool, time_format: str
+) -> None:
+    run(todotxt_file, add_due, time_format, full_screen=full_screen)
 
 
 if __name__ == "__main__":

@@ -39,15 +39,23 @@ class ProjectTagValidator(Validator):
 
 # prompt the user to add a todo
 def prompt_todo(
-    *, add_due: bool, time_format: str, projects: List[str]
+    *, add_due: bool, time_format: str, projects: List[str], full_screen: bool = True
 ) -> Optional[Task]:
     # prompt the user for a new todo (just the text)
-    todo_text: Optional[str] = input_dialog(title="Add Todo:").run()
+    if full_screen:
+        todo_text: Optional[str] = input_dialog(title="Add Todo:").run()
+    else:
+        todo_text: Optional[str] = prompt(
+            "[Todo]> ",
+        )
 
     if todo_text is None:
         return None
     elif not todo_text.strip():
-        message_dialog(title="Error", text="No input provided for the todo").run()
+        if full_screen:
+            message_dialog(title="Error", text="No input provided for the todo").run()
+        else:
+            click.echo("No input provided for the todo", err=True)
         return None
 
     projects_raw: str = ""
@@ -64,47 +72,75 @@ def prompt_todo(
         )
 
     # select priority
-    todo_priority: str = button_dialog(
-        title="Priority:",
-        text="A is highest, C is lowest",
-        buttons=[
-            ("A", "A"),
-            ("B", "B"),
-            ("C", "C"),
-        ],
-    ).run()
+    if full_screen:
+        todo_priority: str = button_dialog(
+            title="Priority:",
+            text="A is highest, C is lowest",
+            buttons=[
+                ("A", "A"),
+                ("B", "B"),
+                ("C", "C"),
+            ],
+        ).run()
+    else:
+
+        def prompt_priority():
+            click.echo("Enter a priority: (A, B, or C): ", nl=False)
+            prio: str = click.getchar().upper()
+            click.echo()
+            if prio not in ["A", "B", "C"]:
+                click.echo(f"Invalid priority '{prio}'")
+            return prio
+
+        resp: Optional[str] = None
+        while resp not in ["A", "B", "C"]:
+            resp = prompt_priority()
+        assert resp in ["A", "B", "C"]
+        todo_priority = resp
 
     # ask if the user wants to add a time
-    add_time: bool = button_dialog(
-        title="Deadline:",
-        text="Do you want to add a deadline for this todo?",
-        buttons=[
-            ("No", False),
-            ("Yes", True),
-        ],
-    ).run()
+    if full_screen:
+        add_time: bool = button_dialog(
+            title="Deadline:",
+            text="Do you want to add a deadline for this todo?",
+            buttons=[
+                ("No", False),
+                ("Yes", True),
+            ],
+        ).run()
+    else:
+        add_time = click.confirm("Do you want to add a deadline for this todo?", default=True)
 
     # prompt for adding a deadline
     todo_time: Optional[datetime] = None
     if add_time:
         while todo_time is None:
-            todo_time_str: Optional[str] = input_dialog(
-                title="Describe the deadline.",
-                text="For example:\n'9AM', 'noon', 'tomorrow at 10PM', 'may 30th at 8PM'",
-            ).run()
-            # if user hit cancel
-            if todo_time_str is None:
-                add_time = False
-                break
+            if full_screen:
+                todo_time_str: Optional[str] = input_dialog(
+                    title="Describe the deadline.",
+                    text="For example:\n'9AM', 'noon', 'tomorrow at 10PM', 'may 30th at 8PM'",
+                ).run()
+                # if user hit cancel
+                if todo_time_str is None:
+                    add_time = False
+                    break
+                else:
+                    todo_time = dateparser.parse(
+                        todo_time_str, settings={"PREFER_DATES_FROM": "future"}
+                    )
+                    if todo_time is None:
+                        message_dialog(
+                            title="Error",
+                            text="Could not parse '{}' into datetime".format(todo_time_str),
+                        ).run()
             else:
-                todo_time = dateparser.parse(
-                    todo_time_str, settings={"PREFER_DATES_FROM": "future"}
-                )
-                if todo_time is None:
-                    message_dialog(
-                        title="Error",
-                        text="Could not parse '{}' into datetime".format(todo_time_str),
-                    ).run()
+                from autotui.options import Option, options
+                from autotui.prompts import prompt_datetime
+
+                with options(Option.LIVE_DATETIME):
+                    todo_time = prompt_datetime(prompt_msg="[Deadline]> ")
+
+
 
     # construct the Task
     constructed: str = f"({todo_priority})"
