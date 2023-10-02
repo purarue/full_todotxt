@@ -56,10 +56,13 @@ def run(
         todos.save(safe=True)
 
 
-@click.command()
+@click.command(
+    context_settings=dict(help_option_names=["-h", "--help"], max_content_width=120)
+)
 @click.argument(
     "TODOTXT_FILE",
     type=click.Path(exists=True, path_type=Path),
+    envvar="FULL_TODOTXT_FILE",
     default=None,
     required=False,
 )
@@ -74,6 +77,8 @@ def run(
     "-t",
     "--time-format",
     default="%Y-%m-%d-%H-%M",
+    envvar="FULL_TODOTXT_TIME_FORMAT",
+    show_envvar=True,
     show_default=True,
     help="Specify a different time format for deadline:",
 )
@@ -83,12 +88,14 @@ def run(
     "full_screen",
     is_flag=True,
     default=True,
-    help="Use prompts or the full screen dialog editor",
-    show_default=True,
+    help="Use prompts or the full screen dialog editor [default: full-screen]",
 )
 def cli(
     todotxt_file: Optional[Path], full_screen: bool, add_due: bool, time_format: str
 ) -> None:
+    """
+    If TODOTXT_FILE is not specified, the environment variable FULL_TODOTXT_FILE will be used.
+    """
     run(todotxt_file, add_due, time_format, full_screen=full_screen)
 
 

@@ -42,14 +42,13 @@ def prompt_todo(
     *, add_due: bool, time_format: str, projects: List[str], full_screen: bool = True
 ) -> Optional[Task]:
     # prompt the user for a new todo (just the text)
+    todo_text: Optional[str] = None
     if full_screen:
-        todo_text: Optional[str] = input_dialog(title="Add Todo:").run()
+        todo_text = input_dialog(title="Add Todo:").run()
     else:
-        todo_text: Optional[str] = prompt(
-            "[Todo]> ",
-        )
+        todo_text = prompt("[Todo]> ")
 
-    if todo_text is None:
+    if not todo_text:
         return None
     elif not todo_text.strip():
         if full_screen:
@@ -84,12 +83,13 @@ def prompt_todo(
         ).run()
     else:
 
-        def prompt_priority():
+        def prompt_priority() -> Optional[str]:
             click.echo("Enter a priority: (A, B, or C): ", nl=False)
             prio: str = click.getchar().upper()
             click.echo()
             if prio not in ["A", "B", "C"]:
                 click.echo(f"Invalid priority '{prio}'")
+                return None
             return prio
 
         resp: Optional[str] = None
@@ -109,7 +109,9 @@ def prompt_todo(
             ],
         ).run()
     else:
-        add_time = click.confirm("Do you want to add a deadline for this todo?", default=True)
+        add_time = click.confirm(
+            "Do you want to add a deadline for this todo?", default=True
+        )
 
     # prompt for adding a deadline
     todo_time: Optional[datetime] = None
@@ -131,7 +133,9 @@ def prompt_todo(
                     if todo_time is None:
                         message_dialog(
                             title="Error",
-                            text="Could not parse '{}' into datetime".format(todo_time_str),
+                            text="Could not parse '{}' into datetime".format(
+                                todo_time_str
+                            ),
                         ).run()
             else:
                 from autotui.options import Option, options
@@ -139,8 +143,6 @@ def prompt_todo(
 
                 with options(Option.LIVE_DATETIME):
                     todo_time = prompt_datetime(prompt_msg="[Deadline]> ")
-
-
 
     # construct the Task
     constructed: str = f"({todo_priority})"
@@ -189,7 +191,13 @@ def locate_todotxt_file(todotxt_filepath: Optional[Path]) -> Optional[Path]:
         possible_locations = [
             home / ".config/todo/todo.txt",
             home / ".todo/todo.txt",
+            home / ".todo.txt",
+            home / "todo.txt",
         ]
+        if "XDG_CONFIG_HOME" in os.environ:
+            possible_locations.insert(
+                0, Path(os.environ["XDG_CONFIG_HOME"]) / "todo/todo.txt"
+            )
         if "TODO_DIR" in os.environ:
             possible_locations.insert(0, Path(os.environ["TODO_DIR"]) / "todo.txt")
         for p in possible_locations:
