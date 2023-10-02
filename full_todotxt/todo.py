@@ -7,29 +7,9 @@ from typing import Union, List, Callable, Optional
 from pathlib import Path
 
 import click
-import dateparser
 from pytodotxt.todotxt import Task  # type: ignore[import]
 
-from prompt_toolkit import prompt
-from prompt_toolkit.document import Document
-from prompt_toolkit.validation import Validator, ValidationError
-
 PathIsh = Union[Path, str]
-
-
-class ProjectTagValidator(Validator):
-    def validate(self, document: Document) -> None:
-        text = document.text
-
-        if len(text.strip()) == 0:
-            raise ValidationError(message="You must specify at least one project tag")
-
-        # check if all input matches '+projectag'
-        for project_tag in text.split():
-            if not bool(re.match(r"\+\w+", project_tag)):
-                raise ValidationError(
-                    message=f"'{project_tag}' doesn't look like a project tag. e.g. '+home'"
-                )
 
 
 # prompt the user to add a todo
@@ -49,7 +29,7 @@ def prompt_todo(
 
         todo_text = input_dialog(title="Add Todo:").run()
     else:
-        todo_text = prompt("[Todo]> ")
+        todo_text = click.prompt("[Todo]> ", prompt_suffix="")
 
     if not todo_text:
         return None
@@ -69,8 +49,29 @@ def prompt_todo(
 
         projects_lst = projects() if callable(projects) else projects
 
+        from prompt_toolkit.document import Document
+        from prompt_toolkit.validation import Validator, ValidationError
+
+        class ProjectTagValidator(Validator):
+            def validate(self, document: Document) -> None:
+                text = document.text
+
+                if len(text.strip()) == 0:
+                    raise ValidationError(
+                        message="You must specify at least one project tag"
+                    )
+
+                # check if all input matches '+projectag'
+                for project_tag in text.split():
+                    if not bool(re.match(r"\+\w+", project_tag)):
+                        raise ValidationError(
+                            message=f"'{project_tag}' doesn't look like a project tag. e.g. '+home'"
+                        )
+
         # project tags
         click.echo("Enter one or more tags, hit 'Tab' to autocomplete")
+        from prompt_toolkit.shortcuts.prompt import prompt
+
         projects_raw = prompt(
             "[Enter Project Tags]> ",
             completer=FuzzyWordCompleter(projects_lst),
@@ -142,6 +143,8 @@ def prompt_todo(
                     add_time = False
                     break
                 else:
+                    import dateparser
+
                     todo_time = dateparser.parse(
                         todo_time_str, settings={"PREFER_DATES_FROM": "future"}
                     )
