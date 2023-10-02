@@ -1,6 +1,6 @@
 # full-todotxt
 
-[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.7|3.8|3.9|3.10](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
+[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.8|3.9|3.10|3.11](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
 
 [todotxt](http://todotxt.org/) interactive interface that forces you to specify certain attributes.
 
@@ -26,7 +26,7 @@ If the `todo.txt` file is not provided as the first argument, it tries to guess 
 
 #### Requires:
 
-`python3.7+`
+`python3.8+`
 
 To install with pip, run:
 

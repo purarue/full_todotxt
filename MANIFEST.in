@@ -1,5 +1,0 @@
-include LICENSE
-include README.md
-exclude tags*
-exclude Makefile
-exclude .github/demo.gif
