@@ -20,6 +20,13 @@ For example:
 
 If the `todo.txt` file is not provided as the first argument, it tries to guess based on typical locations
 
+The `my.todotxt.active` module in [HPI](https://github.com/seanbreckenridge/HPI) parses the deadline back into python:
+
+```
+$ hpi query my.todotxt.active.todos -s | jq 'select(.deadline) | .raw' -r
+(C) 2023-10-01 drink water +self deadline:2023-10-02T00-00-0700
+```
+
 ## Installation
 
 #### Requires:
