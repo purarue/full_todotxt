@@ -76,7 +76,7 @@ def run(
 @click.option(
     "-t",
     "--time-format",
-    default="%Y-%m-%d-%H-%M",
+    default="%Y-%m-%d %H:%M%z",
     envvar="FULL_TODOTXT_TIME_FORMAT",
     show_envvar=True,
     show_default=True,

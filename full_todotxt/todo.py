@@ -144,6 +144,14 @@ def prompt_todo(
                 with options(Option.LIVE_DATETIME):
                     todo_time = prompt_datetime(prompt_msg="[Deadline]> ")
 
+    if todo_time is not None:
+        # floor the time to the nearest minute
+        todo_time = todo_time.replace(second=0, microsecond=0)
+
+        # if the user didn't specify a timezone, assume they meant their local timezone
+        if todo_time.tzinfo is None:
+            todo_time = todo_time.replace(tzinfo=datetime.now().astimezone().tzinfo)
+
     # construct the Task
     constructed: str = f"({todo_priority})"
     constructed += f" {date.today()}"
