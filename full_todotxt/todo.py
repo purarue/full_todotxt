@@ -180,6 +180,10 @@ def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
         if todo_time.tzinfo is None:
             todo_time = todo_time.replace(tzinfo=datetime.now().astimezone().tzinfo)
 
+        return todo_time
+    else:
+        return None
+
 
 # prompt the user to add a todo
 def prompt_todo(
