@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import re
 
 from datetime import datetime, date
@@ -12,16 +10,7 @@ from pytodotxt.todotxt import Task  # type: ignore[import]
 PathIsh = Union[Path, str]
 
 
-# prompt the user to add a todo
-def prompt_todo(
-    *,
-    add_due: bool,
-    date_format: str,
-    projects: Union[List[str], Callable[[], List[str]]],
-    full_screen: bool = True,
-) -> Optional[Task]:
-    from prompt_toolkit.formatted_text import HTML
-
+def _prompt_todo_text(full_screen: bool) -> Optional[str]:
     # prompt the user for a new todo (just the text)
     todo_text: Optional[str] = None
     if full_screen:
@@ -41,6 +30,19 @@ def prompt_todo(
         else:
             click.echo("No input provided for the todo", err=True)
         return None
+
+    return todo_text
+
+
+Projects = Union[List[str], Callable[[], List[str]]]
+
+
+def _prompt_projects(
+    todo_text: str,
+    projects: Projects,
+    full_screen: bool,
+) -> str:
+    from prompt_toolkit.formatted_text import HTML
 
     projects_raw: str = ""
     # if you provided a project in the text itself, skip forcing you to specify one
@@ -80,6 +82,10 @@ def prompt_todo(
             bottom_toolbar=HTML("<b>Todo:</b> {}".format(todo_text)),
         )
 
+    return projects_raw
+
+
+def _prompt_priority(full_screen: bool) -> str:
     # select priority
     if full_screen:
         from prompt_toolkit.shortcuts import button_dialog
@@ -110,6 +116,10 @@ def prompt_todo(
         assert resp in ["A", "B", "C"]
         todo_priority = resp
 
+    return todo_priority
+
+
+def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
     # ask if the user wants to add a time
     if full_screen:
         from prompt_toolkit.shortcuts import button_dialog
@@ -170,6 +180,27 @@ def prompt_todo(
         if todo_time.tzinfo is None:
             todo_time = todo_time.replace(tzinfo=datetime.now().astimezone().tzinfo)
 
+
+# prompt the user to add a todo
+def prompt_todo(
+    *,
+    add_due: bool,
+    date_format: str,
+    projects: Union[List[str], Callable[[], List[str]]],
+    add_deadline: bool,
+    full_screen: bool = True,
+) -> Optional[Task]:
+    todo_text: Optional[str] = _prompt_todo_text(full_screen)
+    if todo_text is None:
+        return None
+
+    projects_raw: str = _prompt_projects(todo_text, projects, full_screen)
+    todo_priority: str = _prompt_priority(full_screen)
+    if add_deadline:
+        todo_time: Optional[datetime] = _prompt_deadline(full_screen, date_format)
+    else:
+        todo_time = None
+
     # construct the Task
     constructed: str = f"({todo_priority})"
     constructed += f" {date.today()}"
@@ -181,5 +212,4 @@ def prompt_todo(
         if add_due:
             constructed += f" due:{datetime.strftime(todo_time, r'%Y-%m-%d')}"
 
-    t = Task(constructed)
-    return t
+    return Task(constructed)

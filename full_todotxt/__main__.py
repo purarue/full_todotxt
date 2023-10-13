@@ -110,7 +110,21 @@ def locate_todotxt_file(todotxt_filepath: Optional[Path]) -> Path:
     default=True,
     help="Use prompts or the full screen dialog editor [default: full-screen]",
 )
-def cli(todotxt_file: Path, full_screen: bool, add_due: bool, time_format: str) -> None:
+@click.option(
+    "-s",
+    "--skip-deadline",
+    is_flag=True,
+    default=False,
+    help="Skip the deadline prompt",
+    show_default=True,
+)
+def cli(
+    todotxt_file: Path,
+    full_screen: bool,
+    add_due: bool,
+    time_format: str,
+    skip_deadline: bool,
+) -> None:
     """
     If TODOTXT_FILE is not specified, the environment variable FULL_TODOTXT_FILE will be used.
     """
@@ -126,6 +140,7 @@ def cli(todotxt_file: Path, full_screen: bool, add_due: bool, time_format: str) 
         date_format=time_format,
         projects=lambda: parse_all_projects(todos),
         full_screen=full_screen,
+        add_deadline=not skip_deadline,
     )
 
     # write back to file
