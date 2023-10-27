@@ -152,7 +152,7 @@ def cli(
 
     # write back to file
     if new_todo is not None:
-        todos.tasks.append(new_todo)
+        todos.add(new_todo)
         click.echo(
             "{}: {}".format(click.style("Adding Todo", fg="green"), str(new_todo))
         )
