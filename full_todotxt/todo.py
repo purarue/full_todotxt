@@ -103,7 +103,7 @@ def _prompt_priority(full_screen: bool) -> str:
 
         def prompt_priority() -> Optional[str]:
             click.echo("Enter a priority: (A, B, or C): ", nl=False)
-            prio: str = click.getchar().upper()
+            prio: str = click.getchar().upper().strip()
             click.echo()
             if prio not in ["A", "B", "C"]:
                 click.echo(f"Invalid priority '{prio}'")
