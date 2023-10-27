@@ -130,6 +130,10 @@ def cli(
     """
     # read from main todo.txt file
     todos: TodoTxt = TodoTxt(todotxt_file)
+    todos.parse()
+
+    linecount = len(Path(todotxt_file).read_text().strip().splitlines())
+    assert linecount == len(todos.tasks), "Line count and task count do not match"
 
     # backup todo.txt file
     full_backup(todotxt_file)
