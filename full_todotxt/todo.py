@@ -1,7 +1,7 @@
 import re
 
 from datetime import datetime, date
-from typing import Union, List, Callable, Optional
+from typing import Union, List, Callable, Optional, Sequence, Dict
 from pathlib import Path
 
 import click
@@ -185,6 +185,21 @@ def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
         return None
 
 
+def _prompt_metadata(required_metadata: Optional[Sequence[str]]) -> Dict[str, str]:
+    if not required_metadata:
+        return {}
+
+    metadata: Dict[str, str] = {}
+    for key in required_metadata:
+        if len(key) == 0:
+            continue
+
+        entered_value = click.prompt(f"[Value for '{key}']> ", prompt_suffix="")
+        metadata[key] = entered_value.strip()
+
+    return metadata
+
+
 # prompt the user to add a todo
 def prompt_todo(
     *,
@@ -193,6 +208,7 @@ def prompt_todo(
     projects: Union[List[str], Callable[[], List[str]]],
     add_deadline: bool,
     full_screen: bool = True,
+    required_metadata: Optional[Sequence[str]] = None,
 ) -> Optional[Task]:
     todo_text: Optional[str] = _prompt_todo_text(full_screen)
     if todo_text is None:
@@ -205,12 +221,18 @@ def prompt_todo(
     else:
         todo_time = None
 
+    metadata = _prompt_metadata(required_metadata)
+
+    # TODO: use bufio instead of string
     # construct the Task
     constructed: str = f"({todo_priority})"
     constructed += f" {date.today()}"
     constructed += f" {todo_text}"
     if projects_raw.strip():
         constructed += f" {projects_raw}"
+    if metadata:
+        tags = " ".join(f"{k}:{v}" for k, v in metadata.items())
+        constructed += f" {tags}"
     if todo_time is not None:
         constructed += f" deadline:{datetime.strftime(todo_time, date_format)}"
         if add_due:

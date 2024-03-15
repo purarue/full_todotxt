@@ -1,5 +1,5 @@
 import os
-from typing import Optional, List, Set
+from typing import Optional, List, Set, Sequence
 from pathlib import Path
 
 import click
@@ -118,12 +118,20 @@ def locate_todotxt_file(todotxt_filepath: Optional[Path]) -> Path:
     help="Skip the deadline prompt",
     show_default=True,
 )
+@click.option(
+    "-m",
+    "--require-metadata",
+    multiple=True,
+    required=False,
+    help="force user to supply a value for a key:value pair",
+)
 def cli(
     todotxt_file: Path,
     full_screen: bool,
     add_due: bool,
     time_format: str,
     skip_deadline: bool,
+    require_metadata: Optional[Sequence[str]],
 ) -> None:
     """
     If TODOTXT_FILE is not specified, the environment variable FULL_TODOTXT_FILE will be used.
@@ -148,6 +156,7 @@ def cli(
         projects=lambda: parse_all_projects(todos),
         full_screen=full_screen,
         add_deadline=not skip_deadline,
+        required_metadata=require_metadata,
     )
 
     # write back to file
