@@ -4,7 +4,7 @@
 
 [todotxt](https://github.com/todotxt/todo.txt) interactive interface that forces you to specify certain attributes.
 
-<img src="https://raw.githubusercontent.com/seanbreckenridge/full_todotxt/master/.github/demo.gif" alt="demo gif">
+<img src="https://raw.githubusercontent.com/purarue/full_todotxt/master/.github/demo.gif" alt="demo gif">
 
 For each todo, you have to specify at least `one project tag` (e.g. `+work`) and a priority `(A)`.
 
@@ -20,7 +20,7 @@ For example:
 
 If the `todo.txt` file is not provided as the first argument, it tries to guess based on typical locations
 
-The `my.todotxt.active` module in [HPI](https://github.com/seanbreckenridge/HPI) parses the deadline back into python:
+The `my.todotxt.active` module in [HPI](https://github.com/purarue/HPI) parses the deadline back into python:
 
 ```
 $ hpi query my.todotxt.active.todos -s | jq 'select(.deadline) | .raw' -r
