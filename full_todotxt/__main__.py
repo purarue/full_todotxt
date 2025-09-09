@@ -1,5 +1,6 @@
 import os
-from typing import Optional, List, Set, Sequence
+from typing import Optional
+from collections.abc import Sequence
 from pathlib import Path
 
 import click
@@ -19,7 +20,7 @@ def full_backup(todotxt_file: PathIsh) -> None:
     copyfile(str(todotxt_file), str(backup_file))
 
 
-def parse_projects(todo_sources: List[TodoTxt]) -> Set[str]:
+def parse_projects(todo_sources: list[TodoTxt]) -> set[str]:
     """Get a list of all tags from the todos"""
     projects = set()
     for tf in todo_sources:
@@ -29,9 +30,9 @@ def parse_projects(todo_sources: List[TodoTxt]) -> Set[str]:
     return projects
 
 
-def parse_all_projects(todo_file: TodoTxt) -> List[str]:
+def parse_all_projects(todo_file: TodoTxt) -> list[str]:
     # list of sources, done.txt will be added if it exists
-    todo_sources: List[TodoTxt] = [todo_file]
+    todo_sources: list[TodoTxt] = [todo_file]
 
     done_file: Path = todo_file.filename.parent / "done.txt"
     if done_file.exists():

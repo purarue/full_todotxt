@@ -1,7 +1,8 @@
 import re
 
 from datetime import datetime, date
-from typing import Union, List, Callable, Optional, Sequence, Dict
+from typing import Union, Callable, Optional
+from collections.abc import Sequence
 from pathlib import Path
 
 import click
@@ -34,7 +35,7 @@ def _prompt_todo_text(full_screen: bool) -> Optional[str]:
     return todo_text
 
 
-Projects = Union[List[str], Callable[[], List[str]]]
+Projects = Union[list[str], Callable[[], list[str]]]
 
 
 def _prompt_projects(
@@ -79,7 +80,7 @@ def _prompt_projects(
             completer=FuzzyWordCompleter(projects_lst),
             complete_while_typing=True,
             validator=ProjectTagValidator(),
-            bottom_toolbar=HTML("<b>Todo:</b> {}".format(todo_text)),
+            bottom_toolbar=HTML(f"<b>Todo:</b> {todo_text}"),
         )
 
     return projects_raw
@@ -185,11 +186,11 @@ def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
         return None
 
 
-def _prompt_metadata(required_metadata: Optional[Sequence[str]]) -> Dict[str, str]:
+def _prompt_metadata(required_metadata: Optional[Sequence[str]]) -> dict[str, str]:
     if not required_metadata:
         return {}
 
-    metadata: Dict[str, str] = {}
+    metadata: dict[str, str] = {}
     for key in required_metadata:
         if len(key) == 0:
             continue
@@ -205,7 +206,7 @@ def prompt_todo(
     *,
     add_due: bool,
     date_format: str,
-    projects: Union[List[str], Callable[[], List[str]]],
+    projects: Union[list[str], Callable[[], list[str]]],
     add_deadline: bool,
     full_screen: bool = True,
     required_metadata: Optional[Sequence[str]] = None,

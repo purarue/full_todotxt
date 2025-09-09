@@ -1,6 +1,6 @@
 # full-todotxt
 
-[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.8|3.9|3.10|3.11](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
+[![PyPi version](https://img.shields.io/pypi/v/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt) [![Python 3.10|3.11|3.12|3.13](https://img.shields.io/pypi/pyversions/full_todotxt.svg)](https://pypi.python.org/pypi/full_todotxt)
 
 [todotxt](https://github.com/todotxt/todo.txt) interactive interface that forces you to specify certain attributes.
 
@@ -31,7 +31,7 @@ $ hpi query my.todotxt.active.todos -s | jq 'select(.deadline) | .raw' -r
 
 #### Requires:
 
-`python3.8+`
+`python3.10+`
 
 To install with pip, run:
 
