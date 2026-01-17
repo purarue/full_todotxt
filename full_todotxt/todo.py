@@ -1,7 +1,8 @@
 import re
 
 from datetime import datetime, date
-from typing import Union, Callable, Optional
+from typing import Union, Optional
+from collections.abc import Callable
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -11,9 +12,9 @@ from pytodotxt.todotxt import Task  # type: ignore[import]
 PathIsh = Union[Path, str]
 
 
-def _prompt_todo_text(full_screen: bool) -> Optional[str]:
+def _prompt_todo_text(full_screen: bool) -> str | None:
     # prompt the user for a new todo (just the text)
-    todo_text: Optional[str] = None
+    todo_text: str | None = None
     if full_screen:
         from prompt_toolkit.shortcuts import input_dialog
 
@@ -102,7 +103,7 @@ def _prompt_priority(full_screen: bool) -> str:
         ).run()
     else:
 
-        def prompt_priority() -> Optional[str]:
+        def prompt_priority() -> str | None:
             click.echo("Enter a priority: (A, B, or C): ", nl=False)
             prio: str = click.getchar().upper().strip()
             click.echo()
@@ -111,7 +112,7 @@ def _prompt_priority(full_screen: bool) -> str:
                 return None
             return prio
 
-        resp: Optional[str] = None
+        resp: str | None = None
         while resp not in ["A", "B", "C"]:
             resp = prompt_priority()
         assert resp in ["A", "B", "C"]
@@ -120,7 +121,7 @@ def _prompt_priority(full_screen: bool) -> str:
     return todo_priority
 
 
-def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
+def _prompt_deadline(full_screen: bool, date_format: str) -> datetime | None:
     # ask if the user wants to add a time
     if full_screen:
         from prompt_toolkit.shortcuts import button_dialog
@@ -139,13 +140,13 @@ def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
         )
 
     # prompt for adding a deadline
-    todo_time: Optional[datetime] = None
+    todo_time: datetime | None = None
     if add_time:
         while todo_time is None:
             if full_screen:
                 from prompt_toolkit.shortcuts import input_dialog, message_dialog
 
-                todo_time_str: Optional[str] = input_dialog(
+                todo_time_str: str | None = input_dialog(
                     title="Describe the deadline.",
                     text="For example:\n'9AM', 'noon', 'tomorrow at 10PM', 'may 30th at 8PM'",
                 ).run()
@@ -186,7 +187,7 @@ def _prompt_deadline(full_screen: bool, date_format: str) -> Optional[datetime]:
         return None
 
 
-def _prompt_metadata(required_metadata: Optional[Sequence[str]]) -> dict[str, str]:
+def _prompt_metadata(required_metadata: Sequence[str] | None) -> dict[str, str]:
     if not required_metadata:
         return {}
 
@@ -206,19 +207,19 @@ def prompt_todo(
     *,
     add_due: bool,
     date_format: str,
-    projects: Union[list[str], Callable[[], list[str]]],
+    projects: list[str] | Callable[[], list[str]],
     add_deadline: bool,
     full_screen: bool = True,
-    required_metadata: Optional[Sequence[str]] = None,
-) -> Optional[Task]:
-    todo_text: Optional[str] = _prompt_todo_text(full_screen)
+    required_metadata: Sequence[str] | None = None,
+) -> Task | None:
+    todo_text: str | None = _prompt_todo_text(full_screen)
     if todo_text is None:
         return None
 
     projects_raw: str = _prompt_projects(todo_text, projects, full_screen)
     todo_priority: str = _prompt_priority(full_screen)
     if add_deadline:
-        todo_time: Optional[datetime] = _prompt_deadline(full_screen, date_format)
+        todo_time: datetime | None = _prompt_deadline(full_screen, date_format)
     else:
         todo_time = None
 

@@ -44,7 +44,7 @@ def parse_all_projects(todo_file: TodoTxt) -> list[str]:
     return list(parse_projects(todo_sources))
 
 
-def locate_todotxt_file(todotxt_filepath: Optional[Path]) -> Path:
+def locate_todotxt_file(todotxt_filepath: Path | None) -> Path:
     if todotxt_filepath is not None:
         if not os.path.exists(todotxt_filepath):
             raise click.BadParameter(
@@ -132,7 +132,7 @@ def cli(
     add_due: bool,
     time_format: str,
     skip_deadline: bool,
-    require_metadata: Optional[Sequence[str]],
+    require_metadata: Sequence[str] | None,
 ) -> None:
     """
     If TODOTXT_FILE is not specified, the environment variable FULL_TODOTXT_FILE will be used.
@@ -151,7 +151,7 @@ def cli(
     full_backup(todotxt_file)
 
     # prompt user for new todo
-    new_todo: Optional[Task] = prompt_todo(
+    new_todo: Task | None = prompt_todo(
         add_due=add_due,
         date_format=time_format,
         projects=lambda: parse_all_projects(todos),
