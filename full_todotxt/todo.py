@@ -1,7 +1,7 @@
 import re
 
 from datetime import datetime, date
-from typing import Union, Optional
+from typing import Union
 from collections.abc import Callable
 from collections.abc import Sequence
 from pathlib import Path
